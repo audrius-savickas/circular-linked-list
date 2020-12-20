@@ -9,47 +9,46 @@ void createList (struct Node** head, int value) {
 
     return; 
 }
-void deleteNodeFromList (struct Node* head, int value) {
-    struct Node* current = head;
+void deleteNodeFromList (struct Node** head, int value) {
+    struct Node* current = *head;
     struct Node* previous = NULL;
-    int bool_not_found = 0;
+    int bool_found = 1;
     //find required node with the value
-    while (current->data != value || bool_not_found) {
-        if (current->next == head) {
+    while (current->data != value) {
+        if (current->next == *head) {
             printf("Given node is not in the list.\n");
-            bool_not_found = 1;
+            bool_found = 0;
             return;
         }
-        if (!bool_not_found) {
-            previous = current;
-            current = current->next;
-        }
+        previous = current;
+        current = current->next;
     }
 
     //check if found node is only node
-    if (current->next == head) {
-        head = NULL;
+    if (current->next == *head && (*head)->next == current && bool_found) {
+        printf("ONLY");
+        *head = NULL;
         free(current);
     }
 
     //if more than one node, check if found node is first node
-    else if (current==head) {
-        previous = head;
-        while (previous->next != head) {
+    else if (current==*head && bool_found) {
+        previous = *head;
+        while (previous->next != *head) {
             previous = previous->next;
         }
-        head = current->next;
-        previous->next = head;
+        *head = current->next;
+        previous->next = *head;
         free(current);
     }
 
     //check if found node is last node
-    else if (current->next == head && current == head) {
-        previous->next = head;
+    else if (current->next == *head && bool_found) {
+        previous->next = *head;
         free(current);
     }
 
-    else {
+    else if (bool_found) {
         previous->next = current->next;
         free(current);
     }

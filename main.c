@@ -22,8 +22,8 @@ _į_galą, atspausdinti_iš_priekio, atspausdinti_iš_galo
 int main() {
     struct Node* head = NULL;
     int choice = 0;
-    //int bool_created = 0;
     int value;
+    int bool_created = 0;
     
     while (choice != 3) {
         printf("Enter 1 if you want to create a circular singly linked list.\n");
@@ -43,10 +43,14 @@ int main() {
         else if (choice == 3) {
             printf("Which value would you like to remove?\n");
             scanf("%d", &value);
+            printf("Current list: ");
             printList(head);
-            deleteNodeFromList(head, value);
+            deleteNodeFromList(&head, value);
         }
         printf("----------------------------------------------------------\n");
     }
+    printf("List after deletion:\n");
     printList(head);
+
+    return 0;
 }
