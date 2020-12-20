@@ -8,6 +8,6 @@ struct Node {
 void createList (struct Node** head, int value);
 void printList (struct Node* head);
 void addToBeginning (struct Node** head, int value);
-void deleteNodeFromList (struct Node** head, int value);
+void deleteList (struct Node **head);
 
 #endif

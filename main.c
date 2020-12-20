@@ -19,28 +19,28 @@ _į_galą, atspausdinti_iš_priekio, atspausdinti_iš_galo
 #include <stdlib.h>
 #include "func.h"
 
+void deleteNodeFromList (struct Node** head, int value);
+
 int main() {
     struct Node* head = NULL;
     int choice = 0;
     int value;
     int bool_created = 0;
     
-    while (choice != 3) {
-        printf("Enter 1 if you want to create a circular singly linked list.\n");
-        printf("Enter 2 if you want to insert a node at the start of the list.\n");
-        printf("Enter 3 if you want to remove a value from the list.\n");
+    while (choice != 2) {
+        printf("Enter 1 if you want to insert a node at the start of the list.\n");
+        printf("Enter 2 if you want to remove a value from the list.\n");
         scanf("%d", &choice);
         if (choice == 1) {
-            printf("Which value would you like to be the first element of the list?\n");
-            scanf("%d", &value);
-            createList(&head, value);
-        }
-        if (choice == 2) {
             printf("Which value would you like to add at the start of the list?\n");
             scanf("%d", &value);
-            addToBeginning(&head, value);
+            if (!bool_created) {
+                bool_created = 1;
+                createList(&head, value);
+            }
+            else addToBeginning(&head, value);
         }
-        else if (choice == 3) {
+        else if (choice == 2) {
             printf("Which value would you like to remove?\n");
             scanf("%d", &value);
             printf("Current list: ");
@@ -49,8 +49,56 @@ int main() {
         }
         printf("----------------------------------------------------------\n");
     }
-    printf("List after deletion:\n");
+    printf("List after node deletion:\n");
     printList(head);
-
+    deleteList(&head);
+    printf("List after list deletion:\n");
+    printList(head);
     return 0;
+}
+
+void deleteNodeFromList (struct Node** head, int value) {
+    struct Node* current = *head;
+    struct Node* previous = NULL;
+    int bool_found = 1;
+    //find required node with the value
+    while (current->data != value) {
+        if (current->next == *head) {
+            printf("Given node is not in the list.\n");
+            bool_found = 0;
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
+
+    //check if found node is only node
+    if (current->next == *head && (*head)->next == current && bool_found) {
+        printf("ONLY");
+        *head = NULL;
+        free(current);
+    }
+
+    //if more than one node, check if found node is first node
+    else if (current==*head && bool_found) {
+        previous = *head;
+        while (previous->next != *head) {
+            previous = previous->next;
+        }
+        *head = current->next;
+        previous->next = *head;
+        free(current);
+    }
+
+    //check if found node is last node
+    else if (current->next == *head && bool_found) {
+        previous->next = *head;
+        free(current);
+    }
+
+    else if (bool_found) {
+        previous->next = current->next;
+        free(current);
+    }
+    return;
 }
