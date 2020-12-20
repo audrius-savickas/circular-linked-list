@@ -21,15 +21,32 @@ _į_galą, atspausdinti_iš_priekio, atspausdinti_iš_galo
 
 int main() {
     struct Node* head = NULL;
-    append(&head, 6);
-
-    push(&head, 7);
-
-    push(&head, 1);
-
-    append(&head, 4);
-
-    insertAfter(head->next, 8);
-
+    int choice = 0;
+    //int bool_created = 0;
+    int value;
+    
+    while (choice != 3) {
+        printf("Enter 1 if you want to create a circular singly linked list.\n");
+        printf("Enter 2 if you want to insert a node at the start of the list.\n");
+        printf("Enter 3 if you want to remove a value from the list.\n");
+        scanf("%d", &choice);
+        if (choice == 1) {
+            printf("Which value would you like to be the first element of the list?\n");
+            scanf("%d", &value);
+            createList(&head, value);
+        }
+        if (choice == 2) {
+            printf("Which value would you like to add at the start of the list?\n");
+            scanf("%d", &value);
+            addToBeginning(&head, value);
+        }
+        else if (choice == 3) {
+            printf("Which value would you like to remove?\n");
+            scanf("%d", &value);
+            printList(head);
+            deleteNodeFromList(head, value);
+        }
+        printf("----------------------------------------------------------\n");
+    }
     printList(head);
 }

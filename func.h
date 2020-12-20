@@ -5,9 +5,9 @@ struct Node {
     int data;
     struct Node* next;
 };
-void printList(struct Node* n);
-void push(struct Node** head_ref, int new_data);
-void insertAfter(struct Node* prev_node, int new_data);
-void append(struct Node** head_ref, int new_data);
+void createList (struct Node** head, int value);
+void printList (struct Node* head);
+void addToBeginning (struct Node** head, int value);
+void deleteNodeFromList (struct Node* head, int value);
 
 #endif
