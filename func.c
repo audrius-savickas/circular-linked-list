@@ -42,7 +42,7 @@ void deleteList (struct Node **head) {
     struct Node* current = (*head)->next; //curr node is the one after head
     struct Node* next = NULL;
     
-    //while current node is not head node
+    //while current node is not head node, free the node
     while (*head != current) {
         next = current->next;
         free(current);
@@ -57,44 +57,55 @@ void deleteList (struct Node **head) {
 void deleteNodeFromList (struct Node** head, int value) {
     struct Node* current = *head;
     struct Node* previous = NULL;
+    struct Node* next = NULL;
     int node_found = 0;
-    int all_found = 0;
-    //find required node with the value
-    while (current->data != value) {
-        if (current->next == *head) {
-            printf("Given node is not in the list.\n");
+
+    //delete nodes until all found
+    while (*head != NULL) {
+        //find required node with the value
+        while (current->data != value) {
+            //if required node not found return from function
+            if (current->next == *head) {
+                //print message if not a single node was found
+                if (!node_found) {
+                    printf("Node not found in the list.\n");
+                }
+                return;
+            }
+            previous = current;
+            current = current->next;
+        }
+        next = current->next;
+
+        //check if found node is only node
+        if (current == *head && current->next == *head) {
+            *head = NULL;
+            free(current);
             return;
         }
-        previous = current;
-        current = current->next;
-    }
 
-    //check if found node is only node
-    if (current == *head && current->next ==*head) {
-        *head = NULL;
-        free(current);
-    }
-
-    //if more than one node, check if found node is first node
-    else if (current==*head) {
-        previous = *head;
-        while (previous->next != *head) {
-            previous = previous->next;
+        //if more than one node, check if found node is first node
+        else if (current == *head) {
+            previous = *head;
+            while (previous->next != *head) {
+                previous = previous->next;
+            }
+            *head = current->next;
+            previous->next = *head;
+            free(current);
         }
-        *head = current->next;
-        previous->next = *head;
-        free(current);
-    }
 
-    //check if found node is last node
-    else if (current->next == *head) {
-        previous->next = *head;
-        free(current);
-    }
+        //check if found node is last node
+        else if (current->next == *head) {
+            previous->next = *head;
+            free(current);
+        }
 
-    else {
-        previous->next = current->next;
-        free(current);
+        else {
+            previous->next = current->next;
+            free(current);
+        }
+        node_found = 1;
+        current = next;
     }
-    return;
 }

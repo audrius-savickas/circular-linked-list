@@ -41,6 +41,7 @@ int main() {
         else if (choice == 2) {
             printf("Which value would you like to remove?\n");
             scanf("%d", &value);
+            printf("----------------------------------------------------------\n");
             printf("Current list: ");
             printList(head);
             deleteNodeFromList(&head, value);
